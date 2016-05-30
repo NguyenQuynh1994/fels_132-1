@@ -82,7 +82,12 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
         $remember = $request->remember;
+
         if (Auth::attempt($auth, $remember)) {
+            if (Auth::user()->role == User::ROLE_ADMIN) {
+                return redirect()->route('admin.category.index');
+            }
+
             return redirect()->route('home');
         } else {
             return redirect()->route('getLogin');
