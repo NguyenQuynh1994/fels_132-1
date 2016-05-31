@@ -11,6 +11,7 @@ use App\Models\LessonWord;
 use App\Models\WordAnswer;
 use App\Models\Lesson;
 use App\Models\Category;
+use App\Models\Word;
 
 class LessonController extends Controller
 {
@@ -21,6 +22,7 @@ class LessonController extends Controller
             'categoryName',
         ]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,16 +52,25 @@ class LessonController extends Controller
     public function store(Request $request)
     {
         $lessons = new Lesson;
+        $word = new Word;
         $userId = Auth::user()->id;
         $categoryId = $request->input('categoryId');
         $category = Category::findOrFail($categoryId);
-        $lessonId = $lessons->createLesson($userId, $categoryId);
-        session()->flash('categoryName', $category->name);
+        $words = $word->getQuestion($categoryId);
 
-        return redirect()->action('LessonWordController@index', [
-            'categoryId' => $categoryId,
-            'lessonId' => $lessonId
-        ]);
+        if (count($words)) {
+            $lessonId = $lessons->createLesson($userId, $categoryId);
+            session()->flash('categoryName', $category->name);
+
+            return redirect()->action('LessonWordController@index', [
+                'categoryId' => $categoryId,
+                'lessonId' => $lessonId
+            ]);
+        }
+
+        $error = 'Not enough data to create lesson';
+
+        return redirect()->back()->with(['errors' => $error]);
     }
 
     /**

@@ -67,8 +67,29 @@ class Word extends Model
 
     public function getQuestion($categoryId)
     {
-        $wordAnswerData = $this->with('wordAnswers')->where('category_id', $categoryId)->get();
+        $listWord = [];
+        $words = Category::findOrFail($categoryId)->words;
+
+        foreach ($words as $word) {
+            $wordAnswers = $this->getWordAnswer($word->id);
+
+            if (count($wordAnswers)) {
+                $listWord[] = [
+                    'id' => $word->id,
+                ];
+            }
+        }
+
+        $wordAnswerData = $this->with('wordAnswers')->whereIn('id', $listWord)->get();
 
         return $wordAnswerData;
+    }
+
+    public function getWordAnswer($wordId)
+    {
+        $word = $this->find($wordId);
+        $wordAnswer = $word->wordAnswers;
+
+        return $wordAnswer;
     }
 }

@@ -47,7 +47,7 @@ class Category extends Model
     public function destroyCategory($id)
     {
         $category = $this->find($id);
-        $categoryData = $category->words()->get();
+        $categoryData = $category->words;
 
         if (!count($categoryData)) {
             if ($category->delete()) {

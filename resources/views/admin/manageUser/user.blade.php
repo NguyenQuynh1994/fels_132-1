@@ -1,36 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">List User</div>
-                <div class="panel-body">
-                    <div class="dataTable_wrapper">
-                        <table>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            @include('admin.partial')
+            <div class="col-lg-9 user-content">
+                <div class="col-lg-12">
+                    <h1 class="panel-header">User
+                        <small>List</small>
+                    </h1>
+                </div>
+                <div class="col-lg-7">
+                    <div class="panel-body">
+                    @include('common.flash_message')
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>NAME</th>
                                     <th>EMAIL</th>
+                                    <th>AVATAR</th>
                                     <th>EDIT</th>
                                     <th>DELETE</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
-                                    <tr class="even gradeC">
-                                        <td class="even gradeC">{{ $user->id }}</td>
-                                        <td class="even gradeC">{{ $user->name }}</td>
-                                        <td class="even gradeC">{{ $user->email }}</td>
-                                        <td class="even gradeC">
-                                            <a class="btn btn-primary" href="{{ URL::route('admin.user.edit', $user->id) }}">
+                                @foreach ($users as $index => $user)
+                                    <tr>
+                                        <td scope="row">{{ $index++ }}</td>
+                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->avatar }}</td>
+                                        <td>
+                                            <a class="btn btn-info" href="{{ URL::route('admin.user.edit', $user->id) }}">
                                                 <i class="fa fa-pencil"></i>
                                                 Edit
                                              </a>
                                         </td>
-                                        <td class="even gradeC">
+                                        <td>
                                             {!! Form::open([
                                                 'route' => [
                                                     'admin.user.destroy',
@@ -41,7 +51,7 @@
                                                 'onsubmit' => 'return confirm("Are you sure delete this catagory?")'
                                             ]) !!}
                                                 {!! Form::submit('Delete', [
-                                                    'class' => 'btn btn-danger btn-sm pull-left'
+                                                    'class' => 'btn btn-info btn-sm pull-left'
                                                 ]) !!}
                                             {!! Form::close() !!}
                                         </td>
@@ -49,15 +59,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-md-5 text-left">
-                            {!! link_to_action('Admin\ManageWordController@index', 'word', [], ['class' => 'btn btn-primary']) !!}
-                        </div>
-                        <div class="col-md-5 text-right">
-                        </div>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,7 @@
             </div>
             <div class="col-lg-7 user-main">
                 @include('common.errors')
-                {!! Form::open(['url' => 'user/profiles/' . $user->id, 'method' => 'PUT', 'files' => true, 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['url' => 'user/profiles/' . $user->id, 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
                     <div class="form-group">
                         {!! Form::label('name', 'Name', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
@@ -27,16 +27,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('avatar', 'Avatar', ['class' => 'col-sm-2 control-label']) !!}
-                        <div class="col-sm-10">
-                            {!! Form::file('avatar') !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
                             {!! Form::reset('Reset', ['class' => 'btn btn-default']) !!}
-                            <a class="btn btn-link" href="{{ url('user/profiles/getChangePass/' . $user->id) }}">Change Password</a>
+                            <br/>
+                                <a class="btn btn-link" href="{{ url('user/profiles/getChangePass/' . $user->id) }}">Change Password</a>
+                                <a class="btn btn-link" href="{{ url('user/profiles/getChangeAvatar/' . $user->id) }}">Change Avatar</a>
                         </div>
                     </div>
                 {!! Form::close() !!}

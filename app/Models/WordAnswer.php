@@ -28,4 +28,42 @@ class WordAnswer extends Model
 
         return $wordAnswer;
     }
+
+    public function createAnswer($request, $wordId)
+    {
+        $wordAnswer = [
+            'content' => $request->content,
+            'word_id' => $wordId,
+            'correct' => $request->correct
+        ];
+
+        if ($this->create($wordAnswer)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function updateAnswer($request)
+    {
+        $wordAnswer = [
+            'content' => $request->content,
+            'correct' => $request->correct
+        ];
+
+        if ($this->update($wordAnswer)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function destroyAnswer($id)
+    {
+        if ($this->destroy($id)) {
+            return true;
+        }
+
+        return false;
+    }
 }

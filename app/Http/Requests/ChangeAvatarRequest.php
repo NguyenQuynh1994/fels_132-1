@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class EditProfileRequest extends Request
+class ChangeAvatarRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class EditProfileRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required',
+            'avatar' => 'image|max:600',
         ];
     }
 }

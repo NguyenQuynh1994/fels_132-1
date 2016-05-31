@@ -8,6 +8,9 @@ use App\Models\Lesson;
 use App\Models\UserWord;
 use App\Models\Relationship;
 use Hash;
+use File;
+use Auth;
+
 class User extends Authenticatable
 {
     /**
@@ -39,10 +42,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Word::class, 'user_words');
     }
+
     public function userWords()
     {
         return $this->hasMany(UserWord::class);
     }
+
     public function activities()
     {
         return $this->hasMany(Activity::class);
@@ -51,6 +56,7 @@ class User extends Authenticatable
     public function getLinkReset($token)
     {
         $link = url('password/reset', $token) . '?email=' . urlencode($this->getEmailForPasswordReset());
+
         return $link;
     }
 
@@ -66,16 +72,9 @@ class User extends Authenticatable
 
     public function updateUser($request)
     {
-        $imagePath = public_path('uploads/image');
-        $image = $request->file('avatar');
-        $fileName = $image->getClientOriginalName();
-        if (!empty($image)) {
-            $image->move($imagePath, $fileName);
-        }
         $userData = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'avatar' => $fileName,
         ];
         $this->update($userData);
     }
@@ -84,6 +83,24 @@ class User extends Authenticatable
     {
         $this->password = Hash::make($password);
         $this->save();
+    }
+
+    public function updateAvatar($request, $oldImage)
+    {
+        $imagePath = public_path('uploads/image/');
+        $image = $request->file('avatar');
+        $extenstion = $image->getClientOriginalExtension();
+        $fileName = md5(rand()) . '.' . $extenstion;
+        $image->move($imagePath, $fileName);
+        $userData = [
+            'avatar' => $fileName,
+        ];
+
+        if (!empty($oldImage)) {
+            File::delete($imagePath . $oldImage);
+        }
+
+        $this->update($userData);
     }
 
     public function isAdmin()

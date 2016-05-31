@@ -35,6 +35,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
     Route::resource('profiles', 'UserController', ['only' => ['show', 'edit', 'update']]);
     Route::get('/profiles/getChangePass/{id}', ['as' => 'user.profiles.getChangePass', 'uses' => 'UserController@getChangePass']);
     Route::post('/profiles/postChangePass/{id}', ['as' => 'user.profiles.postChangePass', 'uses' => 'UserController@postChangePass']);
+    Route::get('/profiles/getChangeAvatar/{id}', ['as' => 'user.profiles.getChangeAvatar', 'uses' => 'UserController@getChangeAvatar']);
+    Route::post('/profiles/postChangeAvatar/{id}', ['as' => 'user.profiles.postChangeAvatar', 'uses' => 'UserController@postChangeAvatar']);
     Route::resource('categories', 'CategoryController', ['only' => ['index']]);
     Route::resource('lessonwords', 'LessonWordController', ['only' => ['index', 'store']]);
     Route::resource('lessons', 'LessonController', ['only' => ['store', 'show']]);
@@ -49,5 +51,5 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function() {
     Route::resource('user', 'Admin\ManageUserController');
     Route::resource('word', 'Admin\ManageWordController');
     Route::resource('category', 'Admin\ManageCategoryController');
+    Route::resource('wordAnswer', 'Admin\ManageWordAnswerController');
 });
-

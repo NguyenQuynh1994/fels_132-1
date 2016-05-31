@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\ChangePassRequest;
+use App\Http\Requests\ChangeAvatarRequest;
 use Auth;
 use App\Models\User;
 use Hash;
@@ -52,11 +53,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $activities = $user->activities()->get();
+        $activities = Auth::user()->activities;
 
         return view('user.profile.show', [
-            'user' => $user,
+            'user' => Auth::user(),
             'activities' => $activities
         ]);
     }
@@ -69,9 +69,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-
-        return view('user.profile.edit', ['user' => $user]);
+        return view('user.profile.edit', ['user' => Auth::user()]);
     }
 
     /**
@@ -83,7 +81,7 @@ class UserController extends Controller
      */
     public function update(EditProfileRequest $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
         $user->updateUser($request);
 
         return redirect('/home');
@@ -102,14 +100,13 @@ class UserController extends Controller
 
     public function getChangePass($id)
     {
-        $user = User::findOrFail($id);
-
-        return view('user.profile.changePass', ['user' => $user]);
+        return view('user.profile.changePass', ['user' => Auth::user()]);
     }
 
     public function postChangePass(ChangePassRequest $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
+
         if (Hash::check($request->input('password'), $user->password)) {
             $user->updatePassword($request->input('new_password'));
 
@@ -118,5 +115,18 @@ class UserController extends Controller
 
             return redirect()->route('user.profiles.getChangePass');
         }
+    }
+
+    public function getChangeAvatar($id)
+    {
+        return view('user.profile.changeAvatar', ['user' => Auth::user()]);
+    }
+
+    public function postChangeAvatar(ChangeAvatarRequest $request, $id)
+    {
+        $user = Auth::user();
+        $user->updateAvatar($request, $user->avatar);
+
+        return redirect('/home');
     }
 }

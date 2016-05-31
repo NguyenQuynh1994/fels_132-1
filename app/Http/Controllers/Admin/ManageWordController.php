@@ -67,4 +67,17 @@ class ManageWordController extends Controller
             'flash_message' => $flashMessage
         ]);
     }
+
+    public function show($id)
+    {
+        $word = Word::findOrFail($id);
+        $wordAnswers = $word->wordAnswers;
+        session()->flash('wordId', $word->id);
+        session()->flash('wordContent', $word->content);
+
+        return view('admin.wordAnswer.index', [
+            'wordAnswers' => $wordAnswers,
+            'word' => $word,
+        ]);
+    }
 }
