@@ -14,6 +14,7 @@ class Word extends Model
     protected $fillable = [
         'content', 'category_id',
     ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -43,24 +44,31 @@ class Word extends Model
             case 'all':
                 $listWord = $this->with('category')
                     ->where('category_id', $categoryId)
-                    ->get();;
+                    ->get();
                 break;
             case 'learn':
-                $listWord = User::find(Auth::user()->id)->userWord()->get();
+                $listWord = Auth::user()
+                    ->userWord()
+                    ->where('category_id', $categoryId)
+                    ->get();
                 break;
             case 'notlearn':
                 $wordLearned = userWord::lists('word_id');
-                $listWord = $this->whereNotIn('id', $wordLearned)->get();
+                $listWord = $this->whereNotIn('id', $wordLearned)
+                    ->where('category_id', $categoryId)
+                    ->get();
                 break;
             default:
                 break;
         }
+
         return $listWord;
     }
 
     public function getQuestion($categoryId)
     {
         $wordAnswerData = $this->with('wordAnswers')->where('category_id', $categoryId)->get();
+
         return $wordAnswerData;
     }
 }

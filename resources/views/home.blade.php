@@ -26,9 +26,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            @foreach ($resultOfUser->lessons as $value)
+                            @foreach ($resultOfUser->activities as $value)
                                 <div class="row">
-                                    Learned {{ $value->result }} words in Lesson {{ $value->category->name }}
+                                    {{ $value->action_type }}
                                 </div>
                             @endforeach
                         </div>

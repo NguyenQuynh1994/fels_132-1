@@ -14,7 +14,6 @@
                                     <th>ID</th>
                                     <th>NAME</th>
                                     <th>EMAIL</th>
-                                    <th>AVATAR</th>
                                     <th>EDIT</th>
                                     <th>DELETE</th>
                                 </tr>
@@ -25,7 +24,6 @@
                                         <td class="even gradeC">{{ $user->id }}</td>
                                         <td class="even gradeC">{{ $user->name }}</td>
                                         <td class="even gradeC">{{ $user->email }}</td>
-                                        <td class="even gradeC">{{ $user->avatar }}</td>
                                         <td class="even gradeC">
                                             <a class="btn btn-primary" href="{{ URL::route('admin.user.edit', $user->id) }}">
                                                 <i class="fa fa-pencil"></i>

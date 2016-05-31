@@ -29,8 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $countWordUserLearned = UserWord::count();
-        $resultOfUser = User::with(['lessons', 'lessons.category'])->find(Auth::user()->id);
+        $countWordUserLearned = UserWord::where('user_id', Auth::user()->id)->count();
+        $resultOfUser = Auth::user()->with('activities')->find(Auth::user()->id);
 
         return view('home', compact('resultOfUser', 'countWordUserLearned'));
     }

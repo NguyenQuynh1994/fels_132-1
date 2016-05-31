@@ -44,14 +44,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('avatar', 'Avatar', [
-                            'class' => 'col-sm-2 control-label'
-                        ]) !!}
-                        <div class="col-sm-10">
-                            {!! Form::file('avatar') !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
                         {!! Form::label('role', 'Role', [
                             'class' => 'col-sm-2 control-label'
                         ]) !!}

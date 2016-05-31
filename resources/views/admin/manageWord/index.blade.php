@@ -14,6 +14,7 @@
             <tr>
                 <th>ID</th>
                 <th>Word</th>
+                <th>Category</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -23,6 +24,7 @@
                 <tr class="even gradeC">
                     <td class="even gradeC">{{ $word->id }}</td>
                     <td class="even gradeC">{{ $word->content }}</td>
+                    <td class="even gradeC">{{ $word->category->name }}</td>
                     <td class="even gradeC">
                         <a class="btn btn-primary" href="{{ URL::route('admin.word.edit', $word->id) }}">
                             <i class="fa fa-pencil"></i>
